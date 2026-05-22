@@ -210,7 +210,7 @@ def compute_state_anoms_dask(da, states_gdf, state_col, states_mask_file):
             mean_ts.rename("ANOM_MEAN"),
             sum_ts.rename("ANOM_SUM")
         ]).to_dataframe().reset_index()
-        df = df.drop(columns=['dayofyear', 'spatial_ref']).rename(columns={'time': 'DATE'})
+        df = df.drop(columns=['dayofyear', 'spatial_ref'], errors='ignore').rename(columns={'time': 'DATE'})
         df['STATE'] = state_str
         results.append(df)
         print(df)
