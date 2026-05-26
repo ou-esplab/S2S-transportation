@@ -30,7 +30,7 @@ S2S_transportation/
 └── src/
     ├── MakePrecipStates.py             # STEP 1: Generate state-level precip anomalies
     ├── MakeDailyMonthlyCombinedDatabases.ipynb  # STEP 2: Build combined crash+climate databases
-    ├── Journal_Figs-REDO2.ipynb        # STEP 3: Generate publication figures
+    ├── Journal_Figs-REDO.ipynb         # STEP 3: Generate publication figures
     ├── plot_utils.py                   # Plotting helper functions (used by Step 3)
     └── archive/                        # Scripts not in current workflow (see below)
 ```
@@ -85,7 +85,7 @@ Run all cells in `src/MakeDailyMonthlyCombinedDatabases.ipynb`.
 
 ### Step 3 — Generate publication figures
 
-Run all cells in `src/Journal_Figs-REDO2.ipynb`.
+Run all cells in `src/Journal_Figs-REDO.ipynb`.
 
 Reads the four combined databases plus ERA5 composites and NHTS VMT data. Calls helper functions from `src/plot_utils.py`.
 
@@ -115,5 +115,5 @@ Scripts in `src/archive/` are not part of the current workflow but are preserved
 | `MakePrecipSWEStates_monthly.py` | Alternative approach computing monthly DJF-only precipitation anomalies (1981–2019); outputs to a different path than the active script and is not used by the current pipeline |
 | `MakePrecipSWEStates_wxregimes.py` | Computes precipitation anomaly composites by weather regime; the output is read in Step 2 but is not propagated into the final figure database |
 | `processSWE_daily.ipynb` | Experimental processing of snow water equivalent (SWE) data; deactivated because SWE records are too limited for the full analysis period |
-| `Journal_Figs-REDO.ipynb` | Earlier version of the figures notebook (superseded by `Journal_Figs-REDO2.ipynb`) |
-| `Journal_Figs.ipynb` | Original figures notebook (superseded by `Journal_Figs-REDO2.ipynb`) |
+| `Journal_Figs-REDO2.ipynb` | Later version of the figures notebook (superseded by `Journal_Figs-REDO.ipynb`) |
+| `Journal_Figs.ipynb` | Original figures notebook (superseded by `Journal_Figs-REDO.ipynb`) |
