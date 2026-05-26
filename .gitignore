@@ -5,3 +5,4 @@ src/Untitled*
 .ipynb_checkpoints/
 Untitled*
 *.log*
+logs/
