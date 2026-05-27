@@ -139,13 +139,13 @@ def plot_crashes_clim(df, months_list, outname="../figs/Figure2.png"):
     # =================================================
     # Top panel: time series
     # =================================================
-    mask_pos = clim >= 0
-    mask_neg = clim < 0
+    mask_pos = total >= 0
+    mask_neg = total < 0
 
-    ax_ts.bar(dates[mask_pos], clim[mask_pos], width=25, color=color_pos)
-    ax_ts.bar(dates[mask_neg], clim[mask_neg], width=25, color=color_neg)
+    ax_ts.bar(dates[mask_pos], total[mask_pos], width=25, color=color_pos)
+    ax_ts.bar(dates[mask_neg], total[mask_neg], width=25, color=color_neg)
 
-    ax_ts.plot(dates, clim, color='black', linewidth=1)
+    ax_ts.plot(dates, clim, color='black', linewidth=1)  # climatology overlay
 
     ax_ts.set_title(
         'a) Monthly Fatal Crash Totals',
