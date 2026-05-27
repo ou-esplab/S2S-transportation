@@ -730,7 +730,7 @@ def plot_wxregimes_state_precip(df, state_centers, save_path='../figs/Figure6.pn
     
 
 def plot_crash_anomalies_cv_smooth(df, cluster_col='CLUSTER_NAME', anomaly_col='FATAL_CRASH_ANOM',
-                                   output_file='../figs/Figure8_cv_smooth.png', figsize=(12,10),
+                                   output_file='../figs/Figure9.png', figsize=(12,10),
                                    smooth_factor=1.5):
     """
     Two-panel figure:
@@ -905,11 +905,9 @@ def plot_wxregimes_state_crash_anomalies_2x2(df, state_centers=None, save_path='
     axes = axes.flatten()
 
     cmap = 'RdBu_r'  # Red = more crashes, Blue = fewer crashes
-    norm = mcolors.TwoSlopeNorm(vmin=-0.3, vcenter=0, vmax=0.3)
-    
-    #abs_max = max(abs(gdf_plot['FATAL_CRASH_ANOM_DETREND'].min()), 
-                 # gdf_plot['FATAL_CRASH_ANOM_DETREND'].max())
-    #norm = mcolors.TwoSlopeNorm(vmin=-abs_max, vcenter=0, vmax=abs_max)
+    abs_max = max(abs(gdf_plot['FATAL_CRASH_ANOM_DETREND'].min()),
+                  gdf_plot['FATAL_CRASH_ANOM_DETREND'].max())
+    norm = mcolors.TwoSlopeNorm(vmin=-abs_max, vcenter=0, vmax=abs_max)
 
     # --- Plot each cluster ---
     for i, regime in enumerate(regimes):
