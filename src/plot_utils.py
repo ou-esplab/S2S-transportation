@@ -326,7 +326,7 @@ def plot_cluster_composites(cluster_comp, cmap='RdBu_r', lon_0=260,
     fig.subplots_adjust(bottom=0.25, top=0.92, hspace=0.05)
     cbar_ax = fig.add_axes([0.25, 0.2, 0.5, 0.02])
     cbar = fig.colorbar(cs, cax=cbar_ax, orientation='horizontal')
-    cbar.set_label("m")
+    cbar.set_label("Z500 Anomaly (m)")
 
     fig.suptitle(suptitle, fontsize='x-large')
 
