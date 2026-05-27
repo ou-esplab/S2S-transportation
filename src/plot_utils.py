@@ -173,7 +173,7 @@ def plot_crashes_clim(df, months_list, outname="../figs/Figure2.png"):
     # =================================================
     # Bottom panel: annual cycle
     # =================================================
-    df_mon = df.sort_values('MONTH')
+    df_mon = df.groupby('MONTH')['CLIM_CRASH'].mean().reset_index()
 
     ax_mon.bar(
         df_mon['MONTH'],
@@ -809,7 +809,6 @@ def plot_crash_anomalies_cv_smooth(df, cluster_col='CLUSTER_NAME', anomaly_col='
     ax_top.axhline(0, color='gray', linestyle='--')
     ax_top.set_ylabel('Mean Crash Anomaly')
     ax_top.set_title('a) CONUS FPRCA by Weather Regime (DJF)')
-    ax_top.set_xticklabels(regimes, rotation=15, ha='right', fontsize=10)
 
     # ---------------------------
     # Bottom panel — PDFs
