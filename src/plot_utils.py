@@ -205,7 +205,9 @@ def plot_enso_anomaly_maps(el_nino_avgs, la_nina_avgs, state_centers, save_path=
     fig, axes = plt.subplots(nrows=2, figsize=(8.5, 11), subplot_kw={'projection': ccrs.PlateCarree()})
 
     cmap = plt.cm.BrBG
-    vmin, vmax = -0.5, 0.5
+    all_vals = list(el_nino_avgs.values()) + list(la_nina_avgs.values())
+    abs_max = max(abs(min(all_vals)), abs(max(all_vals)))
+    vmin, vmax = -abs_max, abs_max
     norm = plt.Normalize(vmin=vmin, vmax=vmax)
 
     titles = ['a) El Niño', 'b) La Niña']
@@ -417,7 +419,7 @@ def plot_wxregimes_state_crash_anomalies(df, state_centers):
 
     plt.show()
     
-def draw_map(ax, r2_df, col, title,state_centers):
+def draw_map(ax, r2_df, col, title, state_centers, vmax=None):
     ax.set_extent([-125, -66, 24, 50])
     ax.add_feature(cfeature.LAND, facecolor='#f0f0f0')
     ax.add_feature(cfeature.OCEAN, facecolor='#d0e0ff')
@@ -456,7 +458,9 @@ def draw_map(ax, r2_df, col, title,state_centers):
 
     # ---- Now add significant states with colormap ----
     cmap = "magma"
-    norm = mcolors.Normalize(vmin=0, vmax=0.5)
+    if vmax is None:
+        vmax = r2_df[col].max() if len(values_sig) > 0 else 0.5
+    norm = mcolors.Normalize(vmin=0, vmax=vmax)
 
     pc = PatchCollection(
         patches_sig, edgecolor='gray',
@@ -494,9 +498,12 @@ def plot_r2_map_panels(r2_df_list, state_centers, save_path=""):
         "b) R² between ENSO Precip Anomaly and Fatal Crash Anomaly"
     ]
 
+    # Compute shared vmax across both panels for a consistent colorbar
+    shared_vmax = max(df["R2"].max() for df in r2_df_list)
+
     pcs = []
     for ax, r2_df, title in zip(axs, r2_df_list, titles):
-        pc = draw_map(ax, r2_df, "R2", title, state_centers)
+        pc = draw_map(ax, r2_df, "R2", title, state_centers, vmax=shared_vmax)
         pcs.append(pc)
 
     # Shared colorbar
