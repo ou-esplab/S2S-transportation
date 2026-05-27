@@ -1130,6 +1130,10 @@ def plot_djf_state_anomaly_maps(df_monthly_state, df_vehicle_miles, months_list,
         sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
         sm.set_array([])
         cbar = fig.colorbar(sm, ax=ax, orientation='horizontal', fraction=0.04, pad=0.05)
+        if col == 'CLIM_CRASH_DJF_SUM':
+            cbar.set_label('Average DJF Fatal Crashes (crashes/month)', fontsize=12)
+        else:
+            cbar.set_label('Crashes per Billion VMT', fontsize=12)
 
     plt.subplots_adjust(hspace=0.2, left=0.05, right=0.95, top=0.95, bottom=0.05)
     if save_path:
