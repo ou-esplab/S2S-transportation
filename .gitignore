@@ -1,9 +1,37 @@
-data/*
-src/__pycache__/
-src/.ipynb_checkpoints/
-src/Untitled*
+# Data directory (symlink to external storage)
+data/
+
+# Archive
 src/archive/
+
+# Large data files
+*.tif
+*.tiff
+*.nc
+*.h5
+*.hdf
+*.hdf5
+*.npz
+*.npy
+*.zip
+*.tar
+*.tar.gz
+*.gz
+
+# Jupyter
 .ipynb_checkpoints/
+**/.ipynb_checkpoints/
+src/Untitled*
 Untitled*
+
+# Python
+src/__pycache__/
+__pycache__/
+*.pyc
+
+# Logs
 *.log*
 logs/
+
+# OS
+.DS_Store
