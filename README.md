@@ -6,6 +6,8 @@ Analysis of the relationship between precipitation anomalies and fatal motor veh
 
 Precipitation is a leading environmental factor in fatal traffic crashes. This project quantifies how large-scale climate signals — specifically ENSO (El Niño–Southern Oscillation) phase and synoptic-scale weather regimes — modulate both precipitation and crash rates at the state and national level. The analysis focuses on December–January–February (DJF) when precipitation-related crash risk is highest.
 
+**Citation:** Elyoussoufi, A., K. Pegion, C. Walker, and B. Illston: The Relationship between Fatal Weather-related Automobile Crashes and Subseasonal to Interannual Precipitation Variability. *To be submitted to Weather, Climate, and Society*, Jul 2026.
+
 Key climate drivers examined:
 - **ENSO** — Niño 3.4 SST anomalies (monthly); El Niño and La Niña phases produce distinct precipitation patterns across the US
 - **Weather regimes** — four recurring synoptic patterns over North America identified by K-means clustering of ERA5 500 hPa geopotential height (DJF 1981–2019)
