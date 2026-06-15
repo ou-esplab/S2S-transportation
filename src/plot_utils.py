@@ -485,20 +485,21 @@ def draw_map(ax, r2_df, col, title, state_centers, vmax=None):
 
 def plot_r2_map_panels(r2_df_list, state_centers, save_path=""):
 
-
-    # ---------- Two-panel FIGURE ----------
-    fig, axs = plt.subplots(
-        2, 1, figsize=(8.5, 11),
-        subplot_kw={'projection': ccrs.PlateCarree()}
-    )
-
-    # panels a and b correspond to list elements 0 and 1
-    titles = [
+    n = len(r2_df_list)
+    all_titles = [
         "a) R² between Total Precip Anomaly and Fatal Crash Anomaly",
         "b) R² between ENSO Precip Anomaly and Fatal Crash Anomaly"
     ]
+    titles = all_titles[:n]
 
-    # Compute shared vmax across both panels for a consistent colorbar
+    fig_height = 5.5 * n + 1.5
+    fig, axs = plt.subplots(
+        n, 1, figsize=(8.5, fig_height),
+        subplot_kw={'projection': ccrs.PlateCarree()}
+    )
+    if n == 1:
+        axs = [axs]
+
     shared_vmax = max(df["R2"].max() for df in r2_df_list)
 
     pcs = []
@@ -506,7 +507,6 @@ def plot_r2_map_panels(r2_df_list, state_centers, save_path=""):
         pc = draw_map(ax, r2_df, "R2", title, state_centers, vmax=shared_vmax)
         pcs.append(pc)
 
-    # Shared colorbar
     cbar = fig.colorbar(
         pcs[-1], ax=axs,
         orientation='horizontal', fraction=0.035, pad=0.03, extend='max'
@@ -515,7 +515,7 @@ def plot_r2_map_panels(r2_df_list, state_centers, save_path=""):
 
     plt.tight_layout()
     plt.subplots_adjust(top=0.93, bottom=0.15)
-    
+
     if save_path:
         plt.savefig(save_path, dpi=300, bbox_inches='tight')
     plt.show()
@@ -541,7 +541,7 @@ def plot_monthly_and_djf_map(
     df_monthly_state : pd.DataFrame
         Must contain columns ['DATE', 'STATE_ABBR', 'CLIM_CRASH'].
     df_vehicle_miles : pd.DataFrame
-        Must contain columns ['STATE_ABBR', 'Total_VMT'].
+        Must contain columns ['STATE_ABBR', 'Total_VMT_millions'].
     state_centers : dict
         Dictionary mapping STATE_ABBR to (lon, lat) for annotation.
     save_path : str, optional
@@ -606,7 +606,7 @@ def plot_monthly_and_djf_map(
 
     # Define colormap and normalization
     values = djf_avg_by_state.merge(df_vehicle_miles, on='STATE_ABBR')
-    values['norm_crash'] = values['CLIM_CRASH_DJF_SUM'] / values['Total_VMT']
+    values['norm_crash'] = values['CLIM_CRASH_DJF_SUM'] / (values['Total_VMT_millions'] / 100)
     cmap = plt.cm.Reds
     norm = mcolors.Normalize(vmin=values['norm_crash'].min(), vmax=values['norm_crash'].max())
 
@@ -1083,7 +1083,8 @@ def plot_djf_state_anomaly_maps(df_monthly_state, df_vehicle_miles, months_list,
     )
     
     values = djf_avg_by_state.merge(df_vehicle_miles, on='STATE_ABBR')
-    values['norm_crash'] = (values['CLIM_CRASH_DJF_SUM'] / values['Total_VMT'])
+    # Standard metric: fatal crashes per 100 million vehicle miles traveled
+    values['norm_crash'] = values['CLIM_CRASH_DJF_SUM'] / (values['Total_VMT_millions'] / 100)
 
     # Prepare maps and titles
     data_cols = ['CLIM_CRASH_DJF_SUM', 'norm_crash']
@@ -1140,7 +1141,7 @@ def plot_djf_state_anomaly_maps(df_monthly_state, df_vehicle_miles, months_list,
         if col == 'CLIM_CRASH_DJF_SUM':
             cbar.set_label('Average DJF Fatal Crashes (crashes/month)', fontsize=12)
         else:
-            cbar.set_label('Crashes per Billion VMT', fontsize=12)
+            cbar.set_label('Fatal Crashes per 100 Million VMT', fontsize=12)
 
     plt.subplots_adjust(hspace=0.2, left=0.05, right=0.95, top=0.95, bottom=0.05)
     if save_path:
