@@ -31,8 +31,7 @@ S2S_transportation/
     ├── MakePrecipStates.py             # STEP 1: Generate state-level precip anomalies
     ├── MakeDailyMonthlyCombinedDatabases.ipynb  # STEP 2: Build combined crash+climate databases
     ├── Journal_Figs.ipynb              # STEP 3: Generate publication figures
-    ├── plot_utils.py                   # Plotting helper functions (used by Step 3)
-    └── archive/                        # Scripts not in current workflow (see below)
+    └── plot_utils.py                   # Plotting helper functions (used by Step 3)
 ```
 
 ## Data Sources
@@ -43,7 +42,7 @@ S2S_transportation/
 | CHIRPS | Climate Hazards Group InfraRed Precipitation with Station data; daily gridded precipitation at 0.25° resolution | UCSB CHG |
 | Niño 3.4 SST | Monthly SST anomalies in Niño 3.4 region; ENSO phase indicator | NOAA |
 | ERA5 composites | 500 hPa geopotential height DJF composites by weather regime cluster | ECMWF/ERA5 |
-| NHTS 2009 | Vehicle miles traveled (VMT) by state; used to normalize crash counts | FHWA |
+| FHWA VM-2 | State total annual VMT (millions of miles); 2008–2023 average used to normalize crash counts to fatal crashes per 100 million VMT | FHWA Highway Statistics |
 
 External data files are stored under `data/` (symlinked; not tracked in git):
 - `data/FARS/FARSNO2UPDATED_FIXED.csv` — processed FARS crash records
@@ -52,7 +51,7 @@ External data files are stored under `data/` (symlinked; not tracked in git):
 - `data/wxregimes/kmeans_4cluster_DJF_1981-2019_NA.nc` — weather regime assignments
 - `data/wxregimes/era5_cluster_comp_z_na_DJF1981-2019.nc` — ERA5 500 hPa composites
 - `data/combined_databases/` — outputs of Step 2 (inputs to Step 3)
-- `data/nhts2009transferabilityvtvmtbystate.csv` — VMT by state
+- `data/fhwa_state_vmt_avg_2008_2023.csv` — FHWA state total VMT averages (2008–2023)
 
 ## Workflow
 
@@ -87,7 +86,7 @@ Run all cells in `src/MakeDailyMonthlyCombinedDatabases.ipynb`.
 
 Run all cells in `src/Journal_Figs.ipynb`.
 
-Reads the four combined databases plus ERA5 composites and NHTS VMT data. Calls helper functions from `src/plot_utils.py`.
+Reads the four combined databases plus ERA5 composites and FHWA VMT data. Calls helper functions from `src/plot_utils.py`.
 
 **Outputs** in `figs/`:
 | Figure | Description |
@@ -96,24 +95,14 @@ Reads the four combined databases plus ERA5 composites and NHTS VMT data. Calls 
 | Figure 3 | Weather regime 500 hPa composites |
 | Figure 4 | Weather regime precipitation anomaly composites by state |
 | Figure 5 | National fatal crashes and climatology time series |
-| Figure 6 | DJF state crash anomalies normalized by VMT |
+| Figure 6 | DJF state crash climatology and crash rate normalized by VMT (fatal crashes per 100 million VMT) |
 | Figure 7 | Monthly crash anomaly distributions |
-| Figure 8 | State-level R² maps (precip–crash; ENSO precip–crash) |
-| Figure 9 | CONUS crash rates by weather regime |
-| Figure 10 | State crash rates by weather regime |
+| Figure 8 | State-level R² maps (monthly precip–crash; ENSO precip–crash) |
+| Figure 9 | State-level R² map (daily precip–crash) |
+| Figure 10 | CONUS crash anomalies by weather regime |
+| Figure 11 | State crash anomalies by weather regime |
 
 ## Known Issues
 
 **`src/MakePrecipStates.py` line 213** — Fixed: the original code attempted `df.drop(columns=['dayofyear', ...])` but `dayofyear` is not a column of the merged DataFrame at that point (it is only a groupby dimension in the climatology calculation). The fix uses `errors='ignore'` so the drop is safe regardless of which columns are present.
 
-## Archived Scripts
-
-Scripts in `src/archive/` are not part of the current workflow but are preserved for reference:
-
-| File | Description |
-|------|-------------|
-| `MakePrecipSWEStates_monthly.py` | Alternative approach computing monthly DJF-only precipitation anomalies (1981–2019); outputs to a different path than the active script and is not used by the current pipeline |
-| `MakePrecipSWEStates_wxregimes.py` | Computes precipitation anomaly composites by weather regime; the output is read in Step 2 but is not propagated into the final figure database |
-| `processSWE_daily.ipynb` | Experimental processing of snow water equivalent (SWE) data; deactivated because SWE records are too limited for the full analysis period |
-| `Journal_Figs-REDO.ipynb` | Earlier version of the figures notebook (superseded by `Journal_Figs.ipynb`) |
-| `Journal_Figs-REDO2.ipynb` | Later version of the figures notebook (superseded by `Journal_Figs.ipynb`) |
