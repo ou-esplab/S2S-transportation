@@ -35,7 +35,6 @@ def plot_crashes(df,save_path='../figs/Figure2.png'):
     # --- Style settings ---
     color_pos = '#D55E00'  # orange
     color_neg = '#0072B2'  # blue
-    panel_bg = '#f7f7f7'
     font_size = 12
 
     # --- Prepare data ---
@@ -53,13 +52,12 @@ def plot_crashes(df,save_path='../figs/Figure2.png'):
     ]
     labels = ['TREND', '']
     titles = [
-        'a) Monthly Fatal Crash Anomalies',
-        'b) Detrended Monthly Fatal Crash Anomalies'
+        '(a) Monthly Fatal Crash Anomalies',
+        '(b) Detrended Monthly Fatal Crash Anomalies'
     ]
 
     # --- Figure setup ---
-    fig, axs = plt.subplots(nrows=2, figsize=(8.5, 11), facecolor='white')
-    fig.patch.set_facecolor(panel_bg)
+    fig, axs = plt.subplots(nrows=2, figsize=(8.5, 11))
 
     # --- Loop over subplots ---
     for i, (ax, v1, v2, label, title) in enumerate(zip(axs, values_main, values_ref, labels, titles)):
@@ -111,7 +109,6 @@ def plot_crashes_clim(df, months_list, outname="../figs/Figure2.png"):
     # ---------------- Style ----------------
     color_pos = '#D55E00'   # orange
     color_neg = '#0072B2'   # blue
-    panel_bg = '#f7f7f7'
     font_size = 12
 
     # ---------------- Data prep ----------------
@@ -124,7 +121,7 @@ def plot_crashes_clim(df, months_list, outname="../figs/Figure2.png"):
     total = df['FATAL_CRASH_COUNT'].values
 
     # ---------------- Figure layout ----------------
-    fig = plt.figure(figsize=(8.5, 11), facecolor=panel_bg)
+    fig = plt.figure(figsize=(8.5, 11))
     gs = GridSpec(
         nrows=2,
         ncols=1,
@@ -148,7 +145,7 @@ def plot_crashes_clim(df, months_list, outname="../figs/Figure2.png"):
     ax_ts.plot(dates, clim, color='black', linewidth=1)  # climatology overlay
 
     ax_ts.set_title(
-        'a) Monthly Fatal Crash Totals',
+        '(a) Monthly Fatal Crash Totals',
         fontsize=font_size,
         fontweight='bold',
         pad=10
@@ -189,7 +186,7 @@ def plot_crashes_clim(df, months_list, outname="../figs/Figure2.png"):
     )
     ax_mon.set_ylabel('Climatological Crash Count', fontsize=font_size)
     ax_mon.set_title(
-        'b) Average # of Fatal Crashes by Month',
+        '(b) Average # of Fatal Crashes by Month',
         fontsize=font_size,
         fontweight='bold'
     )
@@ -210,7 +207,7 @@ def plot_enso_anomaly_maps(el_nino_avgs, la_nina_avgs, state_centers, save_path=
     vmin, vmax = -abs_max, abs_max
     norm = plt.Normalize(vmin=vmin, vmax=vmax)
 
-    titles = ['a) El Niño', 'b) La Niña']
+    titles = ['(a) El Niño', '(b) La Niña']
     data_dicts = [el_nino_avgs, la_nina_avgs]
 
     shpfilename = shapereader.natural_earth(resolution='50m',
@@ -222,7 +219,7 @@ def plot_enso_anomaly_maps(el_nino_avgs, la_nina_avgs, state_centers, save_path=
 
     for ax, title, data in zip(axes, titles, data_dicts):
         ax.set_extent([-125, -66, 24, 50], crs=ccrs.PlateCarree())
-        ax.add_feature(cfeature.LAND, facecolor='#f0f0f0')
+        ax.add_feature(cfeature.LAND, facecolor='white')
         ax.add_feature(cfeature.OCEAN, facecolor='#d0e0ff')
         ax.add_feature(cfeature.STATES, linewidth=1.2, edgecolor='gray')
 
@@ -421,7 +418,7 @@ def plot_wxregimes_state_crash_anomalies(df, state_centers):
     
 def draw_map(ax, r2_df, col, title, state_centers, vmax=None):
     ax.set_extent([-125, -66, 24, 50])
-    ax.add_feature(cfeature.LAND, facecolor='#f0f0f0')
+    ax.add_feature(cfeature.LAND, facecolor='white')
     ax.add_feature(cfeature.OCEAN, facecolor='#d0e0ff')
     ax.add_feature(cfeature.STATES, edgecolor='gray', linewidth=1)
 
@@ -487,8 +484,8 @@ def plot_r2_map_panels(r2_df_list, state_centers, save_path=""):
 
     n = len(r2_df_list)
     all_titles = [
-        "a) R² between Total Precip Anomaly and Fatal Crash Anomaly",
-        "b) R² between ENSO Precip Anomaly and Fatal Crash Anomaly"
+        "(a) R² between Total Precip Anomaly and Fatal Crash Anomaly",
+        "(b) R² between ENSO Precip Anomaly and Fatal Crash Anomaly"
     ]
     titles = all_titles[:n]
 
@@ -586,13 +583,13 @@ def plot_monthly_and_djf_map(
     ax1.set_xticks(range(1,13))
     ax1.set_xticklabels(['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'])
     ax1.set_ylabel('Climatological Crash Count')
-    ax1.set_title('a) Average # of Fatal Crashes by Month', fontsize=14, fontweight='bold')
+    ax1.set_title('(a) Average # of Fatal Crashes by Month', fontsize=14, fontweight='bold')
     ax1.grid(axis='y', linestyle='--', alpha=0.4)
 
     # --- Bottom panel: DJF state map ---
     ax2 = fig.add_subplot(2, 1, 2, projection=ccrs.LambertConformal())
     ax2.set_extent([-125, -66, 24, 50], crs=ccrs.PlateCarree())
-    ax2.add_feature(cfeature.LAND, facecolor='#f0f0f0')
+    ax2.add_feature(cfeature.LAND, facecolor='white')
     ax2.add_feature(cfeature.OCEAN, facecolor='#d0e0ff')
     ax2.add_feature(cfeature.BORDERS, linewidth=1.2)
     ax2.add_feature(cfeature.STATES, linewidth=1.2, edgecolor='gray')
@@ -630,7 +627,7 @@ def plot_monthly_and_djf_map(
                      fontsize=8, bbox=dict(facecolor='white', alpha=0.8, boxstyle='round,pad=0.2'),
                      transform=ccrs.PlateCarree())
 
-    ax2.set_title('b) Average Total # of Fatal Crashes by State (DJF) Normalized by Vehicle Miles Driven',
+    ax2.set_title('(b) Average Total # of Fatal Crashes by State (DJF) Normalized by Vehicle Miles Driven',
                   fontsize=14, fontweight='bold')
 
     # --- Colorbar below map only ---
@@ -808,7 +805,7 @@ def plot_crash_anomalies_cv_smooth(df, cluster_col='CLUSTER_NAME', anomaly_col='
     )
     ax_top.axhline(0, color='gray', linestyle='--')
     ax_top.set_ylabel('Mean Crash Anomaly')
-    ax_top.set_title('a) CONUS FPRCA by Weather Regime (DJF)')
+    ax_top.set_title('(a) CONUS FPRCA by Weather Regime (DJF)')
 
     # ---------------------------
     # Bottom panel — PDFs
@@ -866,7 +863,7 @@ def plot_crash_anomalies_cv_smooth(df, cluster_col='CLUSTER_NAME', anomaly_col='
 
     ax_bottom.set_xlabel('Crash Anomaly')
     ax_bottom.set_ylabel('Standardized Density')
-    ax_bottom.set_title('b) Standardized PDFs of Crash Anomalies by Weather Regime (DJF)')
+    ax_bottom.set_title('(b) Standardized PDFs of Crash Anomalies by Weather Regime (DJF)')
     ax_bottom.legend()
     ax_bottom.grid(True, linestyle=':', alpha=0.5)
 
@@ -1088,15 +1085,15 @@ def plot_djf_state_anomaly_maps(df_monthly_state, df_vehicle_miles, months_list,
 
     # Prepare maps and titles
     data_cols = ['CLIM_CRASH_DJF_SUM', 'norm_crash']
-    titles = ['a) Average DJF Fatal Crashes',
-              'b) Average DJF Normalized Fatal Crashes']
+    titles = ['(a) Average DJF Fatal Crashes',
+              '(b) Average DJF Normalized Fatal Crashes']
     
     # --- Create figure with map projections ---
     fig, axs = plt.subplots(2, 1, figsize=figsize, subplot_kw={'projection': ccrs.LambertConformal()})
 
     for ax, col, title in zip(axs, data_cols, titles):
         ax.set_extent([-125, -66, 24, 50], crs=ccrs.PlateCarree())
-        ax.add_feature(cfeature.LAND, facecolor='#f0f0f0')
+        ax.add_feature(cfeature.LAND, facecolor='white')
         ax.add_feature(cfeature.OCEAN, facecolor='#d0e0ff')
         ax.add_feature(cfeature.BORDERS, linewidth=1.2)
         ax.add_feature(cfeature.STATES, linewidth=1.2, edgecolor='gray')
