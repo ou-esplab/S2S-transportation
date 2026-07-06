@@ -1080,8 +1080,8 @@ def plot_djf_state_anomaly_maps(df_monthly_state, df_vehicle_miles, months_list,
     )
     
     values = djf_avg_by_state.merge(df_vehicle_miles, on='STATE_ABBR')
-    # Standard metric: fatal crashes per 100 million VMT (annualized from DJF monthly avg)
-    values['norm_crash'] = (values['CLIM_CRASH_DJF_SUM'] * 12) / (values['Total_VMT_millions'] / 100)
+    # Normalize DJF crash count by annual VMT
+    values['norm_crash'] = values['CLIM_CRASH_DJF_SUM'] / (values['Total_VMT_millions'] / 100)
 
     # Prepare maps and titles
     data_cols = ['CLIM_CRASH_DJF_SUM', 'norm_crash']
@@ -1138,7 +1138,7 @@ def plot_djf_state_anomaly_maps(df_monthly_state, df_vehicle_miles, months_list,
         if col == 'CLIM_CRASH_DJF_SUM':
             cbar.set_label('Average DJF Fatal Crashes (crashes/month)', fontsize=12)
         else:
-            cbar.set_label('Fatal Crashes per 100 Million VMT (annualized)', fontsize=12)
+            cbar.set_label('Average DJF Fatal Crashes per 100 Million VMT', fontsize=12)
 
     plt.subplots_adjust(hspace=0.2, left=0.05, right=0.95, top=0.95, bottom=0.05)
     if save_path:
